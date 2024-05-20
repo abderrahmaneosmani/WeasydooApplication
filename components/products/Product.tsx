@@ -9,12 +9,12 @@ type ItemProps = {
     price: string;
   };
 };
-
+import {SCREEN} from '../../screens/enum.screen';
 export const Product = ({item}: ItemProps) => {
   const navigation = useNavigation();
 
   const handleNavigateToProductDetails = () => {
-    navigation.navigate('ProductDetails', {
+    navigation.navigate(SCREEN.ProductsList, {
       item,
     });
   };
