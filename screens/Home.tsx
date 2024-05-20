@@ -1,4 +1,5 @@
 import {Button, Text, View} from 'react-native';
+import {SCREEN} from './enum.screen';
 
 export default function HomeScreen({navigation}: any) {
   return (
@@ -7,13 +8,13 @@ export default function HomeScreen({navigation}: any) {
       <Button
         title="Go to Details s"
         onPress={() => {
-          navigation.navigate('Products');
+          navigation.navigate(SCREEN.ProductsList);
         }}
       />
       <Button
         title="Go to Details login"
         onPress={() => {
-          navigation.navigate('Login');
+          navigation.navigate(SCREEN.Login);
         }}
       />
     </View>

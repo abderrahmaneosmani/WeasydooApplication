@@ -1,5 +1,9 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Button, Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import IconO from 'react-native-vector-icons/Octicons';
+import {COLORS} from '../utils/colors';
+import {calculateStars} from '../utils';
+import {hp, wp} from '../utils/responsive';
 
 const ProductDetails = ({route}: any) => {
   const {item} = route.params;
@@ -10,6 +14,23 @@ const ProductDetails = ({route}: any) => {
         <Image source={{uri: item.image}} style={styles.image} />
         <Text style={styles.price}>{item.price}</Text>
         <Text>{item.title}</Text>
+        <View style={styles.starts}>
+          {calculateStars(item.rating.rate).map(star => (
+            <IconO
+              color={COLORS.yellow}
+              name="star-fill"
+              size={20}
+              key={star}
+            />
+          ))}
+          <IconO name="star-fill" size={20} />
+          <IconO name="star-fill" size={20} />
+        </View>
+        <Text>About</Text>
+        <Text>{item.description}</Text>
+      </View>
+      <View style={styles.buttonContainer}>
+        <Button title="Add to cart" color={COLORS.orange} />
       </View>
     </View>
   );
@@ -18,10 +39,16 @@ const ProductDetails = ({route}: any) => {
 export default ProductDetails;
 
 const styles = StyleSheet.create({
-  container: {flex: 1, alignItems: 'center'},
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    width: wp('80%'),
+    justifyContent: 'center',
+    margin: 'auto',
+  },
   item: {
     alignItems: 'center',
-    backgroundColor: '#f9c2ff',
+    backgroundColor: '#f8f8f8',
     padding: 20,
     marginTop: 20,
     marginVertical: 8,
@@ -32,7 +59,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    width: 200,
+  },
+  starts: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 10,
   },
   price: {
     padding: 10,
@@ -40,9 +71,15 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   image: {
-    width: 150,
-    height: 150,
+    width: wp('60%'),
+    height: hp('30%'),
     borderRadius: 30,
     marginRight: 16,
+  },
+  buttonContainer: {
+    margin: 'auto',
+    width: wp('60%'),
+    height: hp('10%'),
+    borderRadius: 15,
   },
 });
