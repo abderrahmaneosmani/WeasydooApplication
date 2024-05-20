@@ -12,11 +12,12 @@ import {useNavigation} from '@react-navigation/native';
 import {SCREEN} from '../../screens/enum.screen';
 import {useMutation} from '@tanstack/react-query';
 import {deleteProduct} from '../../services/api';
+import {NavigationProp, ParamListBase} from '@react-navigation/native';
 
 export const ProductItem = ({item}: any) => {
-  const navigation = useNavigation();
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
   const handleNavigateToProductEdit = () => {
-    navigation.navigate(SCREEN.EditProduct, {
+    navigation.navigate(SCREEN.EditProduct as string, {
       item,
     });
   };

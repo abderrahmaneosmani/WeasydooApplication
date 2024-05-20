@@ -1,4 +1,8 @@
-import {useNavigation} from '@react-navigation/native';
+import {
+  NavigationProp,
+  ParamListBase,
+  useNavigation,
+} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 
@@ -11,7 +15,7 @@ type ItemProps = {
 };
 import {SCREEN} from '../../screens/enum.screen';
 export const Product = ({item}: ItemProps) => {
-  const navigation = useNavigation();
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
 
   const handleNavigateToProductDetails = () => {
     navigation.navigate(SCREEN.ProductsList, {

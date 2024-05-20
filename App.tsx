@@ -17,6 +17,7 @@ import ContextQuery from './components/ContextQuery';
 import EditProduct from './components/products/EditProduct';
 import {SCREEN} from './screens/enum.screen';
 import ManageProducts from './screens/ManageProducts';
+import {AddProduct} from './components/products/AddProduct';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
@@ -36,6 +37,7 @@ function App(): React.JSX.Element {
             component={ManageProducts}
           />
           <Stack.Screen name={SCREEN.EditProduct} component={EditProduct} />
+          <Stack.Screen name={SCREEN.AddProduct} component={AddProduct} />
         </Stack.Navigator>
       </NavigationContainer>
     </ContextQuery>

@@ -1,18 +1,16 @@
-import {View, Button} from 'react-native';
 import React from 'react';
-import {useMutation} from '@tanstack/react-query';
-import {ProductType, updateProduct} from '../../services/api';
-import {useNavigation} from '@react-navigation/native';
+import {ActivityIndicator, Button, View} from 'react-native';
 import {Formik} from 'formik';
 import InputLabel from '../atoms/InputLabel';
+import {useNavigation} from '@react-navigation/native';
+import {useMutation} from '@tanstack/react-query';
+import {ProductType, addProduct} from '../../services/api';
 
-const EditProduct = ({route}: any) => {
-  const {item} = route.params;
-
+export const AddProduct = () => {
   const navigation = useNavigation();
 
-  const mutationUpdateProduct = useMutation({
-    mutationFn: async (pr: ProductType) => updateProduct(pr),
+  const mutationAddProduct = useMutation({
+    mutationFn: async (pr: Omit<ProductType, 'id'>) => addProduct(pr),
     onSuccess: () => {
       navigation.goBack();
     },
@@ -21,24 +19,22 @@ const EditProduct = ({route}: any) => {
     },
   });
 
-  const handleUpdateProduct = (values: any) => {
-    mutationUpdateProduct.mutate(values);
-  };
-
+  if (mutationAddProduct.isPending) {
+    return <ActivityIndicator size="large" />;
+  }
   return (
     <Formik
-      initialValues={{
-        category: item.category,
-        price: item.price,
-        description: item.description,
-        id: item.id,
-      }}
-      onSubmit={values => {
-        values.id = item.id;
-        handleUpdateProduct(values);
+      initialValues={{category: '', price: '', description: '', title: ''}}
+      onSubmit={(values: Omit<ProductType, 'id'>) => {
+        mutationAddProduct.mutate(values);
       }}>
       {({handleChange, handleSubmit, values}) => (
         <View>
+          <InputLabel
+            label="title"
+            value={values.title}
+            setValue={handleChange('title')}
+          />
           <InputLabel
             label="Price"
             value={values.price}
@@ -46,12 +42,12 @@ const EditProduct = ({route}: any) => {
           />
           <InputLabel
             label="category"
-            value={values.category}
+            value={values?.category}
             setValue={handleChange('category')}
           />
           <InputLabel
             label="description"
-            value={values.description}
+            value={values?.description}
             setValue={handleChange('description')}
           />
           <Button onPress={() => handleSubmit()} title="Submit" />
@@ -60,5 +56,3 @@ const EditProduct = ({route}: any) => {
     </Formik>
   );
 };
-
-export default EditProduct;
