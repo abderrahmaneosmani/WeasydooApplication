@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import IconO from 'react-native-vector-icons/Octicons';
@@ -6,14 +6,7 @@ import {SCREEN} from '../screens/enum.screen';
 import Login from '../screens/Login';
 import Products from '../screens/Products';
 import {COLORS} from '../components/utils/colors';
-
-function SettingsScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Settings! is</Text>
-    </View>
-  );
-}
+import ManageProducts from '../screens/ManageProducts';
 
 const Tab = createBottomTabNavigator();
 const BottomNavigator = () => {
@@ -25,7 +18,7 @@ const BottomNavigator = () => {
       <Tab.Navigator
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
-            if (route.name === 'Settings') {
+            if (route.name === SCREEN.ManageProducts) {
               return (
                 <IconO
                   name="package-dependents"
@@ -48,7 +41,7 @@ const BottomNavigator = () => {
         <Tab.Screen name={SCREEN.Home} component={Products} />
         <Tab.Screen name={SCREEN.Login} component={Login} />
 
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name={SCREEN.ManageProducts} component={ManageProducts} />
       </Tab.Navigator>
     </View>
   );

@@ -1,9 +1,9 @@
 import {
   Alert,
-  Button,
   Image,
   StyleSheet,
   Text,
+  TouchableHighlight,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -13,6 +13,10 @@ import {SCREEN} from '../../screens/enum.screen';
 import {useMutation} from '@tanstack/react-query';
 import {deleteProduct} from '../../services/api';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
+import {COLORS} from '../utils/colors';
+import {hp, wp} from '../utils/responsive';
+import IconO from 'react-native-vector-icons/Octicons';
+import IconFeather from 'react-native-vector-icons/Feather';
 
 export const ProductItem = ({item}: any) => {
   const navigation: NavigationProp<ParamListBase> = useNavigation();
@@ -43,19 +47,19 @@ export const ProductItem = ({item}: any) => {
     );
   };
   return (
-    <TouchableOpacity>
+    <TouchableOpacity style={styles.container}>
       <View>
         <Image source={{uri: item.image}} style={styles.image} />
         <Text>{item.title}</Text>
         <Text style={styles.price}>{item.price}</Text>
         <Text>{item.category}</Text>
         <View style={styles.actions}>
-          <Button
-            title="Edit"
-            color="#841584"
-            onPress={handleNavigateToProductEdit}
-          />
-          <Button title="Delete" color="red" onPress={handleDelete} />
+          <TouchableHighlight onPress={handleNavigateToProductEdit}>
+            <IconFeather color={COLORS.primary} size={30} name="edit" />
+          </TouchableHighlight>
+          <TouchableHighlight onPress={handleDelete}>
+            <IconO color="red" size={30} name="trash" />
+          </TouchableHighlight>
         </View>
       </View>
     </TouchableOpacity>
@@ -64,20 +68,24 @@ export const ProductItem = ({item}: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: COLORS.gray,
+    borderRadius: 10,
+    width: wp('80%'),
+    margin: 'auto',
+    marginVertical: 8,
+    marginHorizontal: 6,
   },
+
   image: {
-    width: 20,
-    height: 20,
+    width: wp('100%'),
+    height: hp('15%'),
   },
-  button: {
-    width: 40,
-  },
+
   price: {
     fontWeight: 'bold',
   },
   actions: {
-    width: 200,
+    width: wp('60%'),
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',

@@ -15,7 +15,7 @@ const ProductDetails = ({route}: any) => {
         <Text style={styles.price}>{item.price}</Text>
         <Text>{item.title}</Text>
         <View style={styles.starts}>
-          {calculateStars(item.rating.rate).map(star => (
+          {calculateStars(item.rating.rate).starsFiled.map(star => (
             <IconO
               color={COLORS.yellow}
               name="star-fill"
@@ -23,8 +23,9 @@ const ProductDetails = ({route}: any) => {
               key={star}
             />
           ))}
-          <IconO name="star-fill" size={20} />
-          <IconO name="star-fill" size={20} />
+          {calculateStars(item.rating.rate).starsNotFiled.map(star => (
+            <IconO name="star-fill" size={20} key={star} />
+          ))}
         </View>
         <Text>About</Text>
         <Text>{item.description}</Text>
