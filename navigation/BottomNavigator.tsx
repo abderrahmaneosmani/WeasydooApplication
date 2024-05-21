@@ -7,9 +7,13 @@ import Login from '../screens/Login';
 import Products from '../screens/Products';
 import {COLORS} from '../components/utils/colors';
 import ManageProducts from '../screens/ManageProducts';
+import useAuth from '../hooks/userAuth';
+import Profile from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
+
 const BottomNavigator = () => {
+  const {isAuthenticated} = useAuth();
   return (
     <View
       style={{
@@ -17,7 +21,7 @@ const BottomNavigator = () => {
       }}>
       <Tab.Navigator
         screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
+          tabBarIcon: ({}) => {
             if (route.name === SCREEN.ManageProducts) {
               return (
                 <IconO
@@ -30,8 +34,11 @@ const BottomNavigator = () => {
             if (route.name === SCREEN.Home) {
               return <IconO name="home" size={25} color={COLORS.primary} />;
             }
-            if (route.name === SCREEN.Login) {
+            if (route.name === SCREEN.Profile) {
               return <IconO name="person" size={25} color={COLORS.primary} />;
+            }
+            if (route.name === SCREEN.Login) {
+              return <IconO name="sign-in" size={25} color={COLORS.primary} />;
             }
           },
           title: '',
@@ -39,9 +46,16 @@ const BottomNavigator = () => {
           tabBarInactiveTintColor: COLORS.secondary,
         })}>
         <Tab.Screen name={SCREEN.Home} component={Products} />
-        <Tab.Screen name={SCREEN.Login} component={Login} />
+        {isAuthenticated && (
+          <Tab.Screen name={SCREEN.ManageProducts} component={ManageProducts} />
+        )}
+        {isAuthenticated && (
+          <Tab.Screen name={SCREEN.Profile} component={Profile} />
+        )}
 
-        <Tab.Screen name={SCREEN.ManageProducts} component={ManageProducts} />
+        {!isAuthenticated && (
+          <Tab.Screen name={SCREEN.Login} component={Login} />
+        )}
       </Tab.Navigator>
     </View>
   );

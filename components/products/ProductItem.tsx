@@ -17,8 +17,10 @@ import {COLORS} from '../utils/colors';
 import {hp, wp} from '../utils/responsive';
 import IconO from 'react-native-vector-icons/Octicons';
 import IconFeather from 'react-native-vector-icons/Feather';
+import useAuth from '../../hooks/userAuth';
 
 export const ProductItem = ({item}: any) => {
+  const {isAdmin} = useAuth();
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const handleNavigateToProductEdit = () => {
     navigation.navigate(SCREEN.EditProduct as string, {
@@ -53,14 +55,16 @@ export const ProductItem = ({item}: any) => {
         <Text>{item.title}</Text>
         <Text style={styles.price}>{item.price}</Text>
         <Text>{item.category}</Text>
-        <View style={styles.actions}>
-          <TouchableHighlight onPress={handleNavigateToProductEdit}>
-            <IconFeather color={COLORS.primary} size={30} name="edit" />
-          </TouchableHighlight>
-          <TouchableHighlight onPress={handleDelete}>
-            <IconO color="red" size={30} name="trash" />
-          </TouchableHighlight>
-        </View>
+        {isAdmin && (
+          <View style={styles.actions}>
+            <TouchableHighlight onPress={handleNavigateToProductEdit}>
+              <IconFeather color={COLORS.primary} size={30} name="edit" />
+            </TouchableHighlight>
+            <TouchableHighlight onPress={handleDelete}>
+              <IconO color="red" size={30} name="trash" />
+            </TouchableHighlight>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );

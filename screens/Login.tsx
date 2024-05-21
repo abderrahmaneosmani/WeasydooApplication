@@ -2,25 +2,33 @@ import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import React from 'react';
 import {useMutation} from '@tanstack/react-query';
 import {CredentialType, loginUser} from '../services/api';
-import {useNavigation} from '@react-navigation/native';
-import {SCREEN} from './enum.screen';
+import useAuth from '../hooks/userAuth';
+import {setItem} from '../components/utils';
 
 const Login = () => {
   const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const navigation = useNavigation();
+  const {setIsAdmin, setIsAuthenticated, isAuthenticated} = useAuth();
+
+  console.log('login ', isAuthenticated);
 
   const loginMutation = useMutation({
     mutationFn: (credential: CredentialType) => loginUser({credential}),
-    onSuccess: (data: any) => {
-      navigation.navigate(SCREEN.ManageProducts);
+    onSuccess: async (data: any) => {
+      const user = {
+        user: {
+          username: username,
+          token: data?.token,
+        },
+      };
+      await setItem('user', JSON.stringify(user));
+      setIsAdmin(true);
+      setIsAuthenticated(true);
     },
   });
   const handleLogin = () => {
     const credential = {username, password};
-    console.log('cred', credential);
     loginMutation.mutate(credential);
-    console.log('isSucess', loginMutation.status);
   };
 
   return (

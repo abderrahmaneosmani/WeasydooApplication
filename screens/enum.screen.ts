@@ -7,4 +7,5 @@ export enum SCREEN {
   'ManageProducts' = 'ManageProducts',
   'AddProduct' = 'AddProduct',
   'BottomTabs' = 'BottomTabs',
+  'Profile' = 'Profile',
 }

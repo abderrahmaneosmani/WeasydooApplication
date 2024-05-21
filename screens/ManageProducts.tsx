@@ -1,4 +1,4 @@
-import {Button, FlatList, View} from 'react-native';
+import {Button, FlatList, Text, View} from 'react-native';
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {fetchProducts} from '../services/api';
@@ -9,8 +9,11 @@ import {
   ParamListBase,
   useNavigation,
 } from '@react-navigation/native';
+import useAuth from '../hooks/userAuth';
 
 const ManageProducts = () => {
+  const {isAuthenticated} = useAuth();
+
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const {data: products} = useQuery({
     queryFn: fetchProducts,
@@ -19,6 +22,9 @@ const ManageProducts = () => {
   const handleNavigateAddProduct = () => {
     navigation.navigate(SCREEN.AddProduct);
   };
+  if (!isAuthenticated) {
+    return <Text>This page not Allowed</Text>;
+  }
   return (
     <View>
       <View style={{width: 200, padding: 4}}>
