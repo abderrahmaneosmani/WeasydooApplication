@@ -3,22 +3,38 @@ import {SafeAreaView, FlatList, StyleSheet} from 'react-native';
 import {Product} from '../components/products/Product';
 import Search from '../components/Search';
 import CategoryFilter from '../components/CategoryFilter';
+import useAuth from '../hooks/userAuth';
+import {ProductType, fetchProducts} from '../services/api';
 
 const Products = () => {
-  const [products, setProducts] = React.useState<any>([]);
+  const {data, setData} = useAuth();
   const [categories, setCategories] = React.useState<any>([]);
   const [selectedCategory, setSelectedCategory] = React.useState('All');
+  const [searchQuery, setSearchQuery] = React.useState('');
+
+  const handleSearchChange = async (text: string) => {
+    const result: any = [];
+    data.forEach((product: ProductType) => {
+      if (product.title.includes(text)) {
+        result.push(product);
+      }
+    });
+    if (text.length === 0) {
+      fetchProducts().then(res => {
+        setData(res);
+      });
+    }
+    setSearchQuery(text);
+    setData(result);
+  };
 
   const handleSelectCategory = (category: string) => {
     setSelectedCategory(category);
   };
 
   React.useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(error => console.error('Error fetching products:', error));
-  }, []);
+    fetchProducts().then(res => setData(res));
+  }, [setData]);
 
   React.useEffect(() => {
     fetch('https://fakestoreapi.com/products/categories')
@@ -36,7 +52,7 @@ const Products = () => {
 
         const res = await fetch(url);
         const data = await res.json();
-        setProducts(data);
+        setData(data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -45,10 +61,14 @@ const Products = () => {
     if (selectedCategory) {
       fetchProducts();
     }
-  }, [selectedCategory]);
+  }, [selectedCategory, setData]);
   return (
     <SafeAreaView style={styles.container}>
-      <Search />
+      <Search
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        handleSearchChange={handleSearchChange}
+      />
       <CategoryFilter
         selectedCategory={selectedCategory}
         categories={categories}
@@ -57,7 +77,7 @@ const Products = () => {
       <FlatList
         numColumns={2}
         columnWrapperStyle={styles.container}
-        data={products}
+        data={data}
         renderItem={({item}) => <Product item={item} />}
         keyExtractor={item => item.id}
       />

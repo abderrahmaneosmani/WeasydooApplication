@@ -1,13 +1,7 @@
 import {StyleSheet, TextInput, View} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 
-const Search = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-
-  const handleSearchChange = (text: string) => {
-    setSearchQuery(text);
-  };
-
+const Search = ({searchQuery, handleSearchChange}: any) => {
   return (
     <View style={styles.searchContainer}>
       <TextInput
