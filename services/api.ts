@@ -70,10 +70,10 @@ export const deleteProduct = async (id: number) => {
       `https://fakestoreapi.com/products/${id}`,
     );
     if (delete_product.data) {
-      return delete_product.data; // Access the data property directly
+      return delete_product.data;
     }
   } catch (error) {
     console.error('Error deleting product:', error);
-    throw error; // Re-throw the error after logging it
+    throw error;
   }
 };
