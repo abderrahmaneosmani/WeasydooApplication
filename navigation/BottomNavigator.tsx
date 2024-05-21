@@ -21,24 +21,36 @@ const BottomNavigator = () => {
       }}>
       <Tab.Navigator
         screenOptions={({route}) => ({
-          tabBarIcon: ({}) => {
-            if (route.name === SCREEN.ManageProducts) {
+          tabBarIcon: ({focused, color}) => {
+            if (route.name === SCREEN.ManageProducts && focused) {
               return (
                 <IconO
                   name="package-dependents"
                   size={25}
-                  color={COLORS.primary}
+                  color={COLORS.orange}
                 />
               );
+            }
+            if (route.name === SCREEN.Home && focused) {
+              return <IconO name="home" size={25} color={COLORS.orange} />;
             }
             if (route.name === SCREEN.Home) {
               return <IconO name="home" size={25} color={COLORS.primary} />;
             }
+            if (route.name === SCREEN.Profile && focused) {
+              return <IconO name="person" size={25} color={COLORS.orange} />;
+            }
             if (route.name === SCREEN.Profile) {
               return <IconO name="person" size={25} color={COLORS.primary} />;
             }
+            if (route.name === SCREEN.Login && focused) {
+              return <IconO name="sign-in" size={25} color={COLORS.orange} />;
+            }
             if (route.name === SCREEN.Login) {
               return <IconO name="sign-in" size={25} color={COLORS.primary} />;
+            }
+            if (route.name === SCREEN.ManageProducts) {
+              return <IconO name="package" size={25} color={COLORS.primary} />;
             }
           },
           title: '',
@@ -49,6 +61,7 @@ const BottomNavigator = () => {
         {isAuthenticated && (
           <Tab.Screen name={SCREEN.ManageProducts} component={ManageProducts} />
         )}
+
         {isAuthenticated && (
           <Tab.Screen name={SCREEN.Profile} component={Profile} />
         )}

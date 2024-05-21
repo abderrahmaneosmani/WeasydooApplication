@@ -33,23 +33,24 @@ export const AuthProvider = ({children}: any) => {
     const dataUser = await getItem('user');
     if (dataUser) {
       setIsAuthenticated(true);
-      const validData = JSON.parse(dataUser.user);
-      if (validData) {
-        setUser(JSON.parse(dataUser.user));
+      if (typeof dataUser === 'object') {
+        const validData = JSON.parse(dataUser.user);
+        if (validData) {
+          setUser(JSON.parse(dataUser.user));
+        }
       }
     }
   };
 
   React.useEffect(() => {
     checkUser();
-  }, []);
+  }, [isAuthenticated]);
   React.useEffect(() => {
     if (isAuthenticated) {
       setIsAuthenticated(true);
     }
   }, [isAuthenticated]);
 
-  console.log('is', isAuthenticated);
   return (
     <AuthContext.Provider
       value={{

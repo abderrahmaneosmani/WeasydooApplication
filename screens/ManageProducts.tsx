@@ -1,4 +1,4 @@
-import {Button, FlatList, Text, View} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {fetchProducts} from '../services/api';
@@ -10,9 +10,11 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import useAuth from '../hooks/userAuth';
+import {COLORS} from '../components/utils/colors';
+import {wp} from '../components/utils/responsive';
 
 const ManageProducts = () => {
-  const {isAuthenticated} = useAuth();
+  const {isAuthenticated, isAdmin} = useAuth();
 
   const navigation: NavigationProp<ParamListBase> = useNavigation();
   const {data: products} = useQuery({
@@ -27,8 +29,14 @@ const ManageProducts = () => {
   }
   return (
     <View>
-      <View style={{width: 200, padding: 4}}>
-        <Button title="Add new Product" onPress={handleNavigateAddProduct} />
+      <View style={styles.container}>
+        {isAdmin && (
+          <Button
+            title="Add new Product"
+            onPress={handleNavigateAddProduct}
+            color={COLORS.orange}
+          />
+        )}
       </View>
       <FlatList
         numColumns={1}
@@ -39,5 +47,11 @@ const ManageProducts = () => {
     </View>
   );
 };
+const styles = StyleSheet.create({
+  container: {
+    width: wp('40%'),
+    marginHorizontal: wp('9%'),
+  },
+});
 
 export default ManageProducts;

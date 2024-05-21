@@ -27,7 +27,7 @@ const ProductDetails = ({route}: any) => {
             <IconO name="star-fill" size={20} key={star} />
           ))}
         </View>
-        <Text>About</Text>
+        <Text style={styles.about}>About </Text>
         <Text>{item.description}</Text>
       </View>
       <View style={styles.buttonContainer}>
@@ -47,13 +47,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     margin: 'auto',
   },
+  about: {
+    paddingVertical: hp('1%'),
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+  },
+  description: {
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+  },
   item: {
-    alignItems: 'center',
     backgroundColor: '#f8f8f8',
-    padding: 20,
-    marginTop: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+    padding: wp('5%'),
+    marginTop: hp('5%'),
+    marginVertical: hp('4'),
+    marginHorizontal: wp('5%'),
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
@@ -70,17 +78,19 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 20,
     fontWeight: 'bold',
+    fontFamily: 'Montserrat',
   },
   image: {
     width: wp('60%'),
     height: hp('30%'),
     borderRadius: 30,
     marginRight: 16,
+    alignItems: 'center',
   },
   buttonContainer: {
     margin: 'auto',
     width: wp('60%'),
     height: hp('10%'),
-    borderRadius: 15,
+    borderRadius: hp('5%'),
   },
 });

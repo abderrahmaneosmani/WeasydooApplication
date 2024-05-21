@@ -3,27 +3,25 @@ import React from 'react';
 import {useMutation} from '@tanstack/react-query';
 import {CredentialType, loginUser} from '../services/api';
 import useAuth from '../hooks/userAuth';
-import {setItem} from '../components/utils';
+import {decodedToken, setItem} from '../components/utils';
 
 const Login = () => {
   const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const {setIsAdmin, setIsAuthenticated, isAuthenticated} = useAuth();
-
-  console.log('login ', isAuthenticated);
-
+  const {setIsAdmin, setIsAuthenticated, setUser} = useAuth();
+  const idsOfUserAdmin = [1, 3, 5];
   const loginMutation = useMutation({
     mutationFn: (credential: CredentialType) => loginUser({credential}),
     onSuccess: async (data: any) => {
       const user = {
-        user: {
-          username: username,
-          token: data?.token,
-        },
+        username: username,
+        token: data?.token,
       };
       await setItem('user', JSON.stringify(user));
-      setIsAdmin(true);
+      const us = decodedToken(data?.token);
+      setIsAdmin(idsOfUserAdmin.includes(Number(us?.sub)));
       setIsAuthenticated(true);
+      setUser(JSON.stringify(user));
     },
   });
   const handleLogin = () => {

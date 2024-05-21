@@ -52,9 +52,12 @@ export const ProductItem = ({item}: any) => {
     <TouchableOpacity style={styles.container}>
       <View>
         <Image source={{uri: item.image}} style={styles.image} />
-        <Text>{item.title}</Text>
-        <Text style={styles.price}>{item.price}</Text>
-        <Text>{item.category}</Text>
+
+        <View style={styles.details}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.price}>{item.price} $</Text>
+          <Text style={styles.category}>{item.category}</Text>
+        </View>
         {isAdmin && (
           <View style={styles.actions}>
             <TouchableHighlight onPress={handleNavigateToProductEdit}>
@@ -73,25 +76,43 @@ export const ProductItem = ({item}: any) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.gray,
-    borderRadius: 10,
+    borderRadius: hp('3%'),
     width: wp('80%'),
-    margin: 'auto',
+    flex: 1,
     marginVertical: 8,
-    marginHorizontal: 6,
+    marginHorizontal: wp('4%'),
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: wp('10%'),
   },
 
   image: {
-    width: wp('100%'),
+    width: wp('80%'),
     height: hp('15%'),
+  },
+  title: {
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+  },
+  category: {
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+  },
+  details: {
+    paddingHorizontal: wp('1%'),
+    marginHorizontal: wp('1%'),
   },
 
   price: {
     fontWeight: 'bold',
+    paddingVertical: hp('1%'),
+    fontFamily: 'Montserrat',
   },
   actions: {
     width: wp('60%'),
     justifyContent: 'space-around',
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: hp('1%'),
   },
 });

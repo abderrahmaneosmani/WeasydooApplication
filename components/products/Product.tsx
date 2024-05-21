@@ -31,9 +31,9 @@ export const Product = ({item}: ItemProps) => {
         <View style={styles.item}>
           <Image source={{uri: item.image}} style={styles.image} />
         </View>
-        <View>
+        <View style={styles.details}>
           <Text style={styles.title}>{item.title}</Text>
-          <Text style={styles.price}>{item.price}</Text>
+          <Text style={styles.price}>{item.price} $</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
     height: 204,
     borderRadius: 15,
     backgroundColor: '#f8f8f8',
+    fontFamily: 'Montserrat',
+
     marginVertical: 10,
   },
   item: {
@@ -53,6 +55,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 176,
     height: 118,
+  },
+  details: {
+    paddingHorizontal: wp('1%'),
   },
   image: {
     width: wp('20%'),
@@ -63,17 +68,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    width: 91,
-    height: 34,
-    fontFamily: 'Inter',
+    width: wp('20%'),
+    height: hp('5%'),
     fontSize: 14,
-    fontWeight: '500',
     gap: 8,
-
+    paddingVertical: hp('0.5%'),
     fontStyle: 'normal',
+    fontWeight: '700',
     letterSpacing: 0,
     textAlign: 'left',
-    color: 'rgba(0, 0, 0, 0.75)',
   },
   price: {
     width: 46,

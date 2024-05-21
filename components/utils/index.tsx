@@ -1,5 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import {jwtDecode} from 'jwt-decode';
+
+export const decodedToken = (token: string) => jwtDecode(token);
 type Props = {
   starsFiled: number[];
   starsNotFiled: number[];
