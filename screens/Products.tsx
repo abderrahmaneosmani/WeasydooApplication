@@ -9,7 +9,6 @@ import {
 import {Product} from '../components/products/Product';
 import Search from '../components/Search';
 import CategoryFilter from '../components/CategoryFilter';
-import useAuth from '../hooks/userAuth';
 import {
   ProductType,
   fetchCategories,
@@ -21,9 +20,9 @@ import {COLORS} from '../components/utils/colors';
 import {useQuery} from '@tanstack/react-query';
 
 const Products = () => {
-  const {dataProducts, setDataProducts} = useAuth();
   const [selectedCategory, setSelectedCategory] = React.useState('All');
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [products, setProducts] = React.useState([]);
 
   const {
     data: DataCategories,
@@ -44,24 +43,6 @@ const Products = () => {
     queryKey: ['products'],
   });
 
-  const handleSearchChange = async (text: string) => {
-    const result: any = [];
-    dataProducts.forEach((product: ProductType) => {
-      if (product.title.includes(text)) {
-        result.push(product);
-      }
-    });
-    if (text.length === 0) {
-      Products;
-    }
-    setSearchQuery(text);
-    setDataProducts(result);
-  };
-
-  const handleSelectCategory = (category: string) => {
-    setSelectedCategory(category);
-  };
-
   const {data: productsByCategory} = useQuery({
     queryKey: ['products', selectedCategory],
     queryFn: () => fetchProductByCategory(selectedCategory),
@@ -69,8 +50,26 @@ const Products = () => {
     initialData: [],
   });
 
-  const filterProducts =
-    selectedCategory === 'All' ? ProductsData : productsByCategory;
+  const handleSelectCategory = (category: string) => {
+    setSelectedCategory(category);
+  };
+
+  const handleSearchChange = async (text: string) => {
+    setSearchQuery(text);
+  };
+  React.useEffect(() => {
+    const filterProducts =
+      selectedCategory === 'All' ? ProductsData : productsByCategory;
+
+    if (searchQuery) {
+      const filtered = filterProducts.filter((product: ProductType) =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase()),
+      );
+      setProducts(filtered);
+    } else {
+      setProducts(filterProducts);
+    }
+  }, [selectedCategory, searchQuery, ProductsData, productsByCategory]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,7 +85,7 @@ const Products = () => {
 
       <CategoryFilter
         selectedCategory={selectedCategory}
-        categories={['All', ...DataCategories]}
+        categories={DataCategories}
         onSelectCategory={handleSelectCategory}
       />
       {isLoadingProducts && (
@@ -96,9 +95,9 @@ const Products = () => {
       <FlatList
         numColumns={isTablet ? 3 : 2}
         columnWrapperStyle={styles.container}
-        data={filterProducts}
+        data={products}
         renderItem={({item}) => <Product item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={(item: any) => item.id}
       />
     </SafeAreaView>
   );
