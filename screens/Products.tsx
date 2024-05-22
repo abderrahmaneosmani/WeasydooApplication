@@ -4,15 +4,21 @@ import {Product} from '../components/products/Product';
 import Search from '../components/Search';
 import CategoryFilter from '../components/CategoryFilter';
 import useAuth from '../hooks/userAuth';
-import {ProductType, fetchProducts} from '../services/api';
+import {ProductType, fetchCategories, fetchProducts} from '../services/api';
 import {isTablet, wp} from '../components/utils/responsive';
 import {COLORS} from '../components/utils/colors';
+import {useQuery} from '@tanstack/react-query';
 
 const Products = () => {
   const {data, setData} = useAuth();
   const [categories, setCategories] = React.useState<any>([]);
   const [selectedCategory, setSelectedCategory] = React.useState('All');
   const [searchQuery, setSearchQuery] = React.useState('');
+
+  const queryCategories = useQuery({
+    queryFn: fetchCategories,
+    queryKey: ['categories'],
+  });
 
   const handleSearchChange = async (text: string) => {
     const result: any = [];
@@ -39,11 +45,10 @@ const Products = () => {
   }, [setData]);
 
   React.useEffect(() => {
-    fetch('https://fakestoreapi.com/products/categories')
-      .then(res => res.json())
-      .then(data => setCategories(data))
-      .catch(error => console.error('Error fetching categories:', error));
-  }, []);
+    if (queryCategories?.data) {
+      setCategories(queryCategories?.data);
+    }
+  }, [queryCategories?.data]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
