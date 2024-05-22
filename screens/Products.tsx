@@ -5,6 +5,7 @@ import Search from '../components/Search';
 import CategoryFilter from '../components/CategoryFilter';
 import useAuth from '../hooks/userAuth';
 import {ProductType, fetchProducts} from '../services/api';
+import {isTablet, wp} from '../components/utils/responsive';
 
 const Products = () => {
   const {data, setData} = useAuth();
@@ -62,6 +63,7 @@ const Products = () => {
       fetchProducts();
     }
   }, [selectedCategory, setData]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Search
@@ -75,7 +77,7 @@ const Products = () => {
         onSelectCategory={handleSelectCategory}
       />
       <FlatList
-        numColumns={2}
+        numColumns={isTablet ? 3 : 2}
         columnWrapperStyle={styles.container}
         data={data}
         renderItem={({item}) => <Product item={item} />}
@@ -92,7 +94,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#f9c2ff',
-    padding: 20,
+    padding: wp('4%'),
     marginVertical: 8,
     marginHorizontal: 16,
   },

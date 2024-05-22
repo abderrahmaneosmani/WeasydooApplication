@@ -3,7 +3,7 @@ import React from 'react';
 import IconO from 'react-native-vector-icons/Octicons';
 import {COLORS} from '../utils/colors';
 import {calculateStars} from '../utils';
-import {hp, wp} from '../utils/responsive';
+import {hp, isTablet, wp} from '../utils/responsive';
 
 const ProductDetails = ({route}: any) => {
   const {item} = route.params;
@@ -43,7 +43,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    width: wp('80%'),
+    width: isTablet ? wp('80%') : wp('70%'),
+    height: isTablet ? hp('60%') : hp('50%'),
     justifyContent: 'center',
     margin: 'auto',
   },
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     marginTop: hp('5%'),
     marginVertical: hp('4'),
     marginHorizontal: wp('5%'),
-    borderRadius: 8,
+    borderRadius: wp('2%'),
     shadowColor: '#000',
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
@@ -81,16 +82,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   image: {
-    width: wp('60%'),
-    height: hp('30%'),
+    width: isTablet ? wp('40%') : wp('60%'),
+    height: isTablet ? hp('30%') : hp('30%'),
     borderRadius: 30,
     marginRight: 16,
     alignItems: 'center',
   },
   buttonContainer: {
-    margin: 'auto',
+    margin: hp('1%'),
     width: wp('60%'),
-    height: hp('10%'),
+    height: isTablet ? hp('5%') : hp('10%'),
     borderRadius: hp('5%'),
   },
 });
