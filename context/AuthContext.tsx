@@ -8,8 +8,8 @@ export type AUTH_CONTEXT = {
   setIsAdmin: any;
   user: any;
   setUser: any;
-  data: any;
-  setData: any;
+  dataProducts: any;
+  setDataProducts: any;
 };
 
 export const AuthContext = createContext<AUTH_CONTEXT>({
@@ -19,15 +19,15 @@ export const AuthContext = createContext<AUTH_CONTEXT>({
   setIsAdmin: undefined,
   user: undefined,
   setUser: undefined,
-  setData: undefined,
-  data: [],
+  setDataProducts: undefined,
+  dataProducts: [],
 });
 
 export const AuthProvider = ({children}: any) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [user, setUser] = React.useState(undefined);
-  const [data, setData] = React.useState([]);
+  const [dataProducts, setDataProducts] = React.useState([]);
 
   const checkUser = async () => {
     const dataUser = await getItem('user');
@@ -58,10 +58,10 @@ export const AuthProvider = ({children}: any) => {
         isAuthenticated,
         user,
         setUser,
-        setData,
+        setDataProducts,
         setIsAuthenticated,
         setIsAdmin,
-        data,
+        dataProducts,
       }}>
       {children}
     </AuthContext.Provider>

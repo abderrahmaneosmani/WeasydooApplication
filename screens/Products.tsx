@@ -10,7 +10,7 @@ import {COLORS} from '../components/utils/colors';
 import {useQuery} from '@tanstack/react-query';
 
 const Products = () => {
-  const {data, setData} = useAuth();
+  const {dataProducts, setDataProducts} = useAuth();
   const [categories, setCategories] = React.useState<any>([]);
   const [selectedCategory, setSelectedCategory] = React.useState('All');
   const [searchQuery, setSearchQuery] = React.useState('');
@@ -20,20 +20,25 @@ const Products = () => {
     queryKey: ['categories'],
   });
 
+  const queryProducts = useQuery({
+    queryFn: fetchProducts,
+    queryKey: ['products'],
+  });
+
   const handleSearchChange = async (text: string) => {
     const result: any = [];
-    data.forEach((product: ProductType) => {
+    dataProducts.forEach((product: ProductType) => {
       if (product.title.includes(text)) {
         result.push(product);
       }
     });
     if (text.length === 0) {
-      fetchProducts().then(res => {
-        setData(res);
-      });
+      if (queryProducts?.isSuccess) {
+        setDataProducts(queryProducts?.data);
+      }
     }
     setSearchQuery(text);
-    setData(result);
+    setDataProducts(result);
   };
 
   const handleSelectCategory = (category: string) => {
@@ -41,12 +46,15 @@ const Products = () => {
   };
 
   React.useEffect(() => {
-    fetchProducts().then(res => setData(res));
-  }, [setData]);
+    if (queryProducts?.isSuccess) {
+      setDataProducts(queryProducts?.data);
+    }
+  }, [queryProducts?.data, queryProducts?.isSuccess, setDataProducts]);
 
   React.useEffect(() => {
     if (queryCategories?.data) {
-      setCategories(queryCategories?.data);
+      const addAllToCategories = ['All', ...queryCategories.data];
+      setCategories(addAllToCategories);
     }
   }, [queryCategories?.data]);
   useEffect(() => {
@@ -59,7 +67,7 @@ const Products = () => {
 
         const res = await fetch(url);
         const data = await res.json();
-        setData(data);
+        setDataProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
       }
@@ -68,7 +76,7 @@ const Products = () => {
     if (selectedCategory) {
       fetchProducts();
     }
-  }, [selectedCategory, setData]);
+  }, [selectedCategory, setDataProducts]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +93,7 @@ const Products = () => {
       <FlatList
         numColumns={isTablet ? 3 : 2}
         columnWrapperStyle={styles.container}
-        data={data}
+        data={dataProducts}
         renderItem={({item}) => <Product item={item} />}
         keyExtractor={item => item.id}
       />
