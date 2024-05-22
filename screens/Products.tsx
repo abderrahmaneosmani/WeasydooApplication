@@ -1,5 +1,11 @@
 import React, {useEffect} from 'react';
-import {SafeAreaView, FlatList, StyleSheet} from 'react-native';
+import {
+  SafeAreaView,
+  FlatList,
+  StyleSheet,
+  Text,
+  ActivityIndicator,
+} from 'react-native';
 import {Product} from '../components/products/Product';
 import Search from '../components/Search';
 import CategoryFilter from '../components/CategoryFilter';
@@ -20,7 +26,12 @@ const Products = () => {
     queryKey: ['categories'],
   });
 
-  const queryProducts = useQuery({
+  const {
+    data: ProductsData,
+    isLoading: isLoadingProducts,
+    isError: isErrorProducts,
+    error: errorProduct,
+  } = useQuery({
     queryFn: fetchProducts,
     queryKey: ['products'],
   });
@@ -33,9 +44,7 @@ const Products = () => {
       }
     });
     if (text.length === 0) {
-      if (queryProducts?.isSuccess) {
-        setDataProducts(queryProducts?.data);
-      }
+      Products;
     }
     setSearchQuery(text);
     setDataProducts(result);
@@ -44,12 +53,6 @@ const Products = () => {
   const handleSelectCategory = (category: string) => {
     setSelectedCategory(category);
   };
-
-  React.useEffect(() => {
-    if (queryProducts?.isSuccess) {
-      setDataProducts(queryProducts?.data);
-    }
-  }, [queryProducts?.data, queryProducts?.isSuccess, setDataProducts]);
 
   React.useEffect(() => {
     if (queryCategories?.data) {
@@ -90,10 +93,14 @@ const Products = () => {
         categories={categories}
         onSelectCategory={handleSelectCategory}
       />
+      {isLoadingProducts && (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      )}
+      {isErrorProducts && <Text>{errorProduct?.message}</Text>}
       <FlatList
         numColumns={isTablet ? 3 : 2}
         columnWrapperStyle={styles.container}
-        data={dataProducts}
+        data={ProductsData}
         renderItem={({item}) => <Product item={item} />}
         keyExtractor={item => item.id}
       />
