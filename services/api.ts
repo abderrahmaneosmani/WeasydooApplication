@@ -75,7 +75,7 @@ export const fetchCategories = async () => {
   try {
     const response = await axios.get(`${endPoint}/products/categories`);
     if (response?.data) {
-      return response?.data;
+      return ['All', ...response?.data];
     }
   } catch (error) {
     console.error('Error fetching categories:', error);
