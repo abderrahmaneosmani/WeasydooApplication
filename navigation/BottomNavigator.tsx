@@ -11,6 +11,20 @@ import useAuth from '../hooks/userAuth';
 import Profile from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
+const iconMap: any = {
+  [SCREEN.ManageProducts]: 'package-dependents',
+  [SCREEN.Home]: 'home',
+  [SCREEN.Profile]: 'person',
+  [SCREEN.Login]: 'sign-in',
+};
+
+const getIconName = (routeName: string, focused: boolean) => {
+  const baseColor: string = focused ? COLORS.orange : COLORS.primary;
+  const iconName: string = iconMap[routeName];
+  return iconName ? (
+    <IconO name={iconName} size={25} color={baseColor} />
+  ) : null;
+};
 
 const BottomNavigator = () => {
   const {isAuthenticated} = useAuth();
@@ -21,38 +35,7 @@ const BottomNavigator = () => {
       }}>
       <Tab.Navigator
         screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color}) => {
-            if (route.name === SCREEN.ManageProducts && focused) {
-              return (
-                <IconO
-                  name="package-dependents"
-                  size={25}
-                  color={COLORS.orange}
-                />
-              );
-            }
-            if (route.name === SCREEN.Home && focused) {
-              return <IconO name="home" size={25} color={COLORS.orange} />;
-            }
-            if (route.name === SCREEN.Home) {
-              return <IconO name="home" size={25} color={COLORS.primary} />;
-            }
-            if (route.name === SCREEN.Profile && focused) {
-              return <IconO name="person" size={25} color={COLORS.orange} />;
-            }
-            if (route.name === SCREEN.Profile) {
-              return <IconO name="person" size={25} color={COLORS.primary} />;
-            }
-            if (route.name === SCREEN.Login && focused) {
-              return <IconO name="sign-in" size={25} color={COLORS.orange} />;
-            }
-            if (route.name === SCREEN.Login) {
-              return <IconO name="sign-in" size={25} color={COLORS.primary} />;
-            }
-            if (route.name === SCREEN.ManageProducts) {
-              return <IconO name="package" size={25} color={COLORS.primary} />;
-            }
-          },
+          tabBarIcon: ({focused}) => getIconName(route.name, focused),
           title: '',
           tabBarActiveTintColor: COLORS.primary,
           tabBarInactiveTintColor: COLORS.secondary,
