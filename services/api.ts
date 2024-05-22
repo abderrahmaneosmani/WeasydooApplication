@@ -81,16 +81,13 @@ export const fetchCategories = async () => {
     console.error('Error fetching categories:', error);
   }
 };
-
 export const fetchProductByCategory = async (category: string) => {
   try {
-    if (category !== 'All') {
-      const res = await axios.get(`${endPoint}/products/${category}`);
-      if (res?.data) {
-        return res.data;
-      }
+    if (category === 'All') {
+      return [];
     }
-    return 'All';
+    const res = await axios.get(`${endPoint}/products/category/${category}`);
+    return res?.data || [];
   } catch (error) {
     console.error('Error fetching products by category:', error);
   }

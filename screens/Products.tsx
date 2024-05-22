@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -10,22 +10,30 @@ import {Product} from '../components/products/Product';
 import Search from '../components/Search';
 import CategoryFilter from '../components/CategoryFilter';
 import useAuth from '../hooks/userAuth';
-import {ProductType, fetchCategories, fetchProducts} from '../services/api';
+import {
+  ProductType,
+  fetchCategories,
+  fetchProductByCategory,
+  fetchProducts,
+} from '../services/api';
 import {isTablet, wp} from '../components/utils/responsive';
 import {COLORS} from '../components/utils/colors';
 import {useQuery} from '@tanstack/react-query';
 
 const Products = () => {
   const {dataProducts, setDataProducts} = useAuth();
-  const [categories, setCategories] = React.useState<any>([]);
   const [selectedCategory, setSelectedCategory] = React.useState('All');
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  const queryCategories = useQuery({
+  const {
+    data: DataCategories,
+    isLoading: isLoadingCategory,
+    isError: isErrorCategories,
+    error: errorCategories,
+  } = useQuery({
     queryFn: fetchCategories,
     queryKey: ['categories'],
   });
-
   const {
     data: ProductsData,
     isLoading: isLoadingProducts,
@@ -54,32 +62,15 @@ const Products = () => {
     setSelectedCategory(category);
   };
 
-  React.useEffect(() => {
-    if (queryCategories?.data) {
-      const addAllToCategories = ['All', ...queryCategories.data];
-      setCategories(addAllToCategories);
-    }
-  }, [queryCategories?.data]);
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        let url = 'https://fakestoreapi.com/products';
-        if (selectedCategory !== 'All') {
-          url += `/category/${selectedCategory}`;
-        }
+  const {data: productsByCategory} = useQuery({
+    queryKey: ['products', selectedCategory],
+    queryFn: () => fetchProductByCategory(selectedCategory),
+    enabled: selectedCategory !== 'All',
+    initialData: [],
+  });
 
-        const res = await fetch(url);
-        const data = await res.json();
-        setDataProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    if (selectedCategory) {
-      fetchProducts();
-    }
-  }, [selectedCategory, setDataProducts]);
+  const filterProducts =
+    selectedCategory === 'All' ? ProductsData : productsByCategory;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -88,9 +79,14 @@ const Products = () => {
         setSearchQuery={setSearchQuery}
         handleSearchChange={handleSearchChange}
       />
+      {isLoadingCategory && (
+        <ActivityIndicator size="small" color={COLORS.primary} />
+      )}
+      {isErrorCategories && <Text>{errorCategories?.message}</Text>}
+
       <CategoryFilter
         selectedCategory={selectedCategory}
-        categories={categories}
+        categories={['All', ...DataCategories]}
         onSelectCategory={handleSelectCategory}
       />
       {isLoadingProducts && (
@@ -100,7 +96,7 @@ const Products = () => {
       <FlatList
         numColumns={isTablet ? 3 : 2}
         columnWrapperStyle={styles.container}
-        data={ProductsData}
+        data={filterProducts}
         renderItem={({item}) => <Product item={item} />}
         keyExtractor={item => item.id}
       />
