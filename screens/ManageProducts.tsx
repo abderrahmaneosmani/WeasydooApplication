@@ -11,7 +11,7 @@ import {
 } from '@react-navigation/native';
 import useAuth from '../hooks/userAuth';
 import {COLORS} from '../components/utils/colors';
-import {wp} from '../components/utils/responsive';
+import {isTablet, wp} from '../components/utils/responsive';
 
 const ManageProducts = () => {
   const {isAuthenticated, isAdmin} = useAuth();
@@ -39,7 +39,8 @@ const ManageProducts = () => {
         )}
       </View>
       <FlatList
-        numColumns={1}
+        numColumns={isTablet ? 2 : 1}
+        columnWrapperStyle={isTablet ? styles.wrapper : null}
         data={products}
         renderItem={({item}) => <ProductItem item={item} />}
         keyExtractor={item => item.id}
@@ -48,6 +49,10 @@ const ManageProducts = () => {
   );
 };
 const styles = StyleSheet.create({
+  wrapper: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   container: {
     width: wp('40%'),
     marginHorizontal: wp('9%'),

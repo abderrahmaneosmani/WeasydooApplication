@@ -14,7 +14,7 @@ import {useMutation} from '@tanstack/react-query';
 import {deleteProduct} from '../../services/api';
 import {NavigationProp, ParamListBase} from '@react-navigation/native';
 import {COLORS} from '../utils/colors';
-import {hp, wp} from '../utils/responsive';
+import {hp, isTablet, wp} from '../utils/responsive';
 import IconO from 'react-native-vector-icons/Octicons';
 import IconFeather from 'react-native-vector-icons/Feather';
 import useAuth from '../../hooks/userAuth';
@@ -50,10 +50,9 @@ export const ProductItem = ({item}: any) => {
   };
   return (
     <TouchableOpacity style={styles.container}>
-      <View>
+      <View style={styles.item}>
         <Image source={{uri: item.image}} style={styles.image} />
-
-        <View style={styles.details}>
+        <View>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.price}>{item.price} $</Text>
           <Text style={styles.category}>{item.category}</Text>
@@ -77,18 +76,22 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.gray,
     borderRadius: hp('3%'),
-    width: wp('80%'),
+    width: isTablet ? wp('35%') : wp('80%'),
+    height: isTablet ? hp('40%') : hp('40%'),
     flex: 1,
     marginVertical: 8,
-    marginHorizontal: wp('4%'),
+    marginHorizontal: isTablet ? wp('4%') : wp('4%'),
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: wp('10%'),
+    paddingHorizontal: isTablet ? wp('2%') : wp('1%'),
   },
-
+  item: {
+    width: isTablet ? wp('30%') : wp('80%'),
+    height: isTablet ? hp('30%') : hp('30%'),
+  },
   image: {
-    width: wp('80%'),
-    height: hp('15%'),
+    width: isTablet ? wp('15%') : wp('80%'),
+    height: isTablet ? hp('15%') : hp('15%'),
   },
   title: {
     fontFamily: 'Montserrat',
@@ -98,10 +101,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontWeight: '700',
   },
-  details: {
-    paddingHorizontal: wp('1%'),
-    marginHorizontal: wp('1%'),
-  },
 
   price: {
     fontWeight: 'bold',
@@ -109,9 +108,9 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat',
   },
   actions: {
-    width: wp('60%'),
-    justifyContent: 'space-around',
+    width: isTablet ? wp('30%') : wp('50%'),
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginVertical: hp('1%'),
   },
