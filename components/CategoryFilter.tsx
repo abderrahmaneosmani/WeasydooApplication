@@ -6,6 +6,8 @@ import {
   View,
   ScrollView,
 } from 'react-native';
+import {COLORS} from './utils/colors';
+import {isTablet, wp} from './utils/responsive';
 
 const CategoryFilter = ({
   categories,
@@ -23,7 +25,14 @@ const CategoryFilter = ({
               selectedCategory === category && styles.selectedCategoryItem,
             ]}
             onPress={() => onSelectCategory(category)}>
-            <Text style={styles.categoryText}>{category}</Text>
+            <Text
+              style={[
+                styles.categoryText,
+                selectedCategory === category &&
+                  styles.categoryItemSelectedText,
+              ]}>
+              {category}
+            </Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -34,6 +43,7 @@ const CategoryFilter = ({
 const styles = StyleSheet.create({
   categoryContainer: {
     padding: 10,
+    width: isTablet ? wp('40%') : wp('100%'),
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
@@ -45,11 +55,21 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   selectedCategoryItem: {
-    backgroundColor: 'lightblue',
-    borderColor: 'blue',
+    backgroundColor: COLORS.orange,
+    borderColor: COLORS.yellow,
   },
   categoryText: {
     fontSize: 14,
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+    textTransform: 'capitalize',
+  },
+  categoryItemSelectedText: {
+    fontSize: 14,
+    color: COLORS.white,
+    fontFamily: 'Montserrat',
+    fontWeight: '700',
+    textTransform: 'capitalize',
   },
 });
 

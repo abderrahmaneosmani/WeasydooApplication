@@ -1,5 +1,7 @@
 import {StyleSheet, TextInput, View} from 'react-native';
 import React from 'react';
+import {COLORS} from './utils/colors';
+import {isTablet, wp} from './utils/responsive';
 
 const Search = ({searchQuery, handleSearchChange}: any) => {
   return (
@@ -17,7 +19,8 @@ const Search = ({searchQuery, handleSearchChange}: any) => {
 const styles = StyleSheet.create({
   searchContainer: {
     padding: 10,
-    backgroundColor: '#f0f0f0', // Optional background color
+    backgroundColor: COLORS.white,
+    width: isTablet ? wp('50%') : wp('60%'),
   },
   searchInput: {
     height: 40,

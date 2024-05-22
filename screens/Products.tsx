@@ -6,6 +6,7 @@ import CategoryFilter from '../components/CategoryFilter';
 import useAuth from '../hooks/userAuth';
 import {ProductType, fetchProducts} from '../services/api';
 import {isTablet, wp} from '../components/utils/responsive';
+import {COLORS} from '../components/utils/colors';
 
 const Products = () => {
   const {data, setData} = useAuth();
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-around',
+    backgroundColor: COLORS.white,
   },
   item: {
     backgroundColor: '#f9c2ff',
