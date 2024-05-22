@@ -17,24 +17,25 @@ const CategoryFilter = ({
   return (
     <View style={styles.categoryContainer}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {categories.map((category: any, index: any) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.categoryItem,
-              selectedCategory === category && styles.selectedCategoryItem,
-            ]}
-            onPress={() => onSelectCategory(category)}>
-            <Text
+        {categories &&
+          categories?.map((category: any, index: any) => (
+            <TouchableOpacity
+              key={index}
               style={[
-                styles.categoryText,
-                selectedCategory === category &&
-                  styles.categoryItemSelectedText,
-              ]}>
-              {category}
-            </Text>
-          </TouchableOpacity>
-        ))}
+                styles.categoryItem,
+                selectedCategory === category && styles.selectedCategoryItem,
+              ]}
+              onPress={() => onSelectCategory(category)}>
+              <Text
+                style={[
+                  styles.categoryText,
+                  selectedCategory === category &&
+                    styles.categoryItemSelectedText,
+                ]}>
+                {category}
+              </Text>
+            </TouchableOpacity>
+          ))}
       </ScrollView>
     </View>
   );

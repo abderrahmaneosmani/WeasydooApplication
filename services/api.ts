@@ -18,11 +18,9 @@ export type CredentialType = {
   username: string;
   password: string;
 };
+export const endPoint = 'https://fakestoreapi.com';
 export const loginUser = async ({credential}: {credential: CredentialType}) => {
-  const user = await axios.post(
-    'https://fakestoreapi.com/auth/login',
-    credential,
-  );
+  const user = await axios.post(`${endPoint}/auth/login`, credential);
   if (user?.data) {
     return user?.data;
   }
@@ -37,10 +35,7 @@ export const fetchProducts = async () => {
 
 export const addProduct = async (product: Omit<ProductType, 'id'>) => {
   try {
-    const create_product = await axios.post(
-      'https://fakestoreapi.com/products',
-      product,
-    );
+    const create_product = await axios.post(`${endPoint}/products`, product);
     if (create_product?.data) {
       return create_product?.data;
     }
@@ -52,7 +47,7 @@ export const addProduct = async (product: Omit<ProductType, 'id'>) => {
 export const updateProduct = async (product: ProductType) => {
   try {
     const update_product = await axios.put(
-      `https://fakestoreapi.com/products/${product.id}`,
+      `${endPoint}/products/${product.id}`,
       product,
     );
     if (update_product?.data) {
@@ -66,9 +61,7 @@ export const updateProduct = async (product: ProductType) => {
 
 export const deleteProduct = async (id: number) => {
   try {
-    const delete_product = await axios.delete(
-      `https://fakestoreapi.com/products/${id}`,
-    );
+    const delete_product = await axios.delete(`${endPoint}/products/${id}`);
     if (delete_product?.data) {
       return delete_product?.data;
     }
@@ -80,13 +73,25 @@ export const deleteProduct = async (id: number) => {
 
 export const fetchCategories = async () => {
   try {
-    const response = await axios.get(
-      'https://fakestoreapi.com/products/categories',
-    );
+    const response = await axios.get(`${endPoint}/products/categories`);
     if (response?.data) {
       return response?.data;
     }
   } catch (error) {
     console.error('Error fetching categories:', error);
+  }
+};
+
+export const fetchProductByCategory = async (category: string) => {
+  try {
+    if (category !== 'All') {
+      const res = await axios.get(`${endPoint}/products/${category}`);
+      if (res?.data) {
+        return res.data;
+      }
+    }
+    return 'All';
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
   }
 };
