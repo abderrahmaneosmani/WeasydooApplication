@@ -1,5 +1,6 @@
 import React, {createContext, useContext, useState} from 'react';
-import {getItem} from '../components/utils';
+import {decodedToken, getItem} from '../components/utils';
+import {idsOfUserAdmin} from '../screens/Login';
 
 export type AUTH_CONTEXT = {
   isAuthenticated: boolean;
@@ -26,24 +27,18 @@ export const AuthProvider = ({children}: any) => {
 
   const checkUser = async () => {
     const dataUser = await getItem('user');
-    if (dataUser) {
+
+    if (typeof dataUser === 'string') {
+      const us = JSON.parse(dataUser);
+      const usr = decodedToken(us?.token);
       setIsAuthenticated(true);
-      if (typeof dataUser === 'object') {
-        const validData = JSON.parse(dataUser.user);
-        if (validData) {
-          setUser(JSON.parse(dataUser.user));
-        }
-      }
+      setIsAdmin(idsOfUserAdmin.includes(Number(usr?.sub)));
+      setUser(us);
     }
   };
 
   React.useEffect(() => {
     checkUser();
-  }, [isAuthenticated]);
-  React.useEffect(() => {
-    if (isAuthenticated) {
-      setIsAuthenticated(true);
-    }
   }, [isAuthenticated]);
 
   return (

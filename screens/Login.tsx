@@ -7,11 +7,12 @@ import {decodedToken, setItem} from '../components/utils';
 import InputLabel from '../components/atoms/InputLabel';
 import {hp, wp} from '../components/utils/responsive';
 
+export const idsOfUserAdmin = [1, 3, 5];
+
 const Login = () => {
   const [username, setUserName] = React.useState('');
   const [password, setPassword] = React.useState('');
   const {setIsAdmin, setIsAuthenticated, setUser} = useAuth();
-  const idsOfUserAdmin = [1, 3, 5];
   const loginMutation = useMutation({
     mutationFn: (credential: CredentialType) => loginUser({credential}),
     onSuccess: async (data: any) => {

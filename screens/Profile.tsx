@@ -5,8 +5,10 @@ import {COLORS} from '../components/utils/colors';
 import {hp, wp} from '../components/utils/responsive';
 
 export default function Profile() {
-  const {user, setIsAuthenticated} = useAuth();
-  const dataUser = typeof user !== 'undefined' && JSON.parse(user);
+  const {user, setIsAuthenticated, isAuthenticated} = useAuth();
+
+  console.log('user', user);
+  console.log('auth', isAuthenticated);
 
   const handleLogout = () => {
     clearItem('user');
@@ -14,7 +16,7 @@ export default function Profile() {
   };
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={styles.text}>Hey {dataUser?.username}</Text>
+      <Text style={styles.text}>Hey {user?.username}</Text>
 
       <View style={styles.container}>
         <Button title="Logout" onPress={handleLogout} color={COLORS.orange} />
