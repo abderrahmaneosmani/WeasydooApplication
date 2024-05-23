@@ -1,4 +1,12 @@
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import IconO from 'react-native-vector-icons/Octicons';
 import {COLORS} from '../utils/colors';
@@ -9,7 +17,7 @@ const ProductDetails = ({route}: any) => {
   const {item} = route.params;
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.item}>
         <Image source={{uri: item.image}} style={styles.image} />
         <Text style={styles.price}>{item.price}</Text>
@@ -33,7 +41,7 @@ const ProductDetails = ({route}: any) => {
       <View style={styles.buttonContainer}>
         <Button title="Add to cart" color={COLORS.orange} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -41,10 +49,8 @@ export default ProductDetails;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     width: isTablet ? wp('80%') : wp('70%'),
-    height: isTablet ? hp('60%') : hp('50%'),
     justifyContent: 'center',
     margin: 'auto',
   },
@@ -59,7 +65,7 @@ const styles = StyleSheet.create({
   },
   item: {
     backgroundColor: '#f8f8f8',
-    padding: wp('5%'),
+    padding: isTablet ? wp('2%') : wp('5%'),
     marginTop: hp('5%'),
     marginVertical: hp('4'),
     marginHorizontal: wp('5%'),
@@ -89,9 +95,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainer: {
-    margin: hp('1%'),
-    width: wp('60%'),
+    margin: isTablet ? hp('1%') : hp('2%'),
+    width: isTablet ? wp('40%') : wp('40%'),
     height: isTablet ? hp('5%') : hp('10%'),
-    borderRadius: hp('5%'),
+    borderRadius: isTablet ? hp('4%') : hp('5%'),
   },
 });
