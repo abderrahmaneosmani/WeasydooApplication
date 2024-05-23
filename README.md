@@ -55,5 +55,5 @@ go to the root of project and run in terminal
 
 `./gradlew assembleDebug
 `
-ll find the apk file in the following path:
+you will find the apk file in the following path:
 **yourProject/android/app/build/outputs/apk/debug/app-debug.apk******
