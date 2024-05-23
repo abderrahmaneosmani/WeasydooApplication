@@ -1,4 +1,11 @@
-import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import React from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {fetchProducts} from '../services/api';
@@ -28,7 +35,7 @@ const ManageProducts = () => {
     return <Text>This page not Allowed</Text>;
   }
   return (
-    <View>
+    <SafeAreaView>
       <View style={styles.container}>
         {isAdmin && (
           <Button
@@ -45,7 +52,7 @@ const ManageProducts = () => {
         renderItem={({item}) => <ProductItem item={item} />}
         keyExtractor={item => item.id}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

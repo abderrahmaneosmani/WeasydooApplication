@@ -1,4 +1,4 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useMutation} from '@tanstack/react-query';
 import {CredentialType, loginUser} from '../services/api';
@@ -32,7 +32,7 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Login</Text>
 
       <InputLabel label={'Username'} value={username} setValue={setUserName} />
@@ -41,7 +41,7 @@ const Login = () => {
       <View style={styles.buttonContainer}>
         <Button title="Login" onPress={handleLogin} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
