@@ -1,9 +1,11 @@
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {Button, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {useMutation} from '@tanstack/react-query';
 import {CredentialType, loginUser} from '../services/api';
 import useAuth from '../hooks/userAuth';
 import {decodedToken, setItem} from '../components/utils';
+import InputLabel from '../components/atoms/InputLabel';
+import {hp, wp} from '../components/utils/responsive';
 
 const Login = () => {
   const [username, setUserName] = React.useState('');
@@ -32,21 +34,13 @@ const Login = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Username"
-        value={username}
-        onChangeText={setUserName}
-        autoCapitalize="none"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        autoCapitalize="none"
-      />
-      <Button title="Login" onPress={handleLogin} />
+
+      <InputLabel label={'Username'} value={username} setValue={setUserName} />
+      <InputLabel label={'Password'} value={password} setValue={setPassword} />
+
+      <View style={styles.buttonContainer}>
+        <Button title="Login" onPress={handleLogin} />
+      </View>
     </View>
   );
 };
@@ -58,6 +52,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
+  },
+  buttonContainer: {
+    marginVertical: hp('2%'),
+    width: wp('30%'),
+    justifyContent: 'center',
+    marginLeft: wp('1%'),
   },
   title: {
     fontSize: 24,

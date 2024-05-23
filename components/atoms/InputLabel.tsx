@@ -1,10 +1,17 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React from 'react';
 
 export type PropsLabel = {
   label: string;
   value: string;
   setValue: any;
+  keyboardType?: KeyboardTypeOptions;
 };
 
 const InputLabel = (props: PropsLabel) => {
@@ -15,7 +22,7 @@ const InputLabel = (props: PropsLabel) => {
         style={styles.input}
         placeholder={props.label}
         value={props.value}
-        keyboardType="number-pad"
+        keyboardType={props?.keyboardType ? props.keyboardType : 'default'}
         onChangeText={props.setValue}
       />
     </View>
